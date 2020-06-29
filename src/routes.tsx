@@ -2,12 +2,14 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import App from '../app.json';
+
+import { DefaultColors as Colors } from './themes';
+
 import Details from './pages/Details';
 import Form from './pages/Form';
 import List from './pages/List';
 import Reader from './pages/Reader';
-
-import App from '../app.json';
 
 const Stack = createStackNavigator();
 
@@ -18,11 +20,11 @@ export default function Routes() {
         initialRouteName={App.expo.name}
         screenOptions={{
           headerStyle: {
-            backgroundColor: '#ffc813',
+            backgroundColor: Colors.primary.hex(),
           },
-          headerTintColor: '#fff',
+          headerTintColor: Colors.lightest.hex(),
           cardStyle: {
-            backgroundColor: '#ededed',
+            backgroundColor: Colors.light.hex(),
           },
         }}
       >
