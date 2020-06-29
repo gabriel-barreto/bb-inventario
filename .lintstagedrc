@@ -1,0 +1,5 @@
+{
+  "*.js": "./node_modules/.bin/eslint",
+  "*.ts": "./node_modules/.bin/eslint",
+  "*.tsx": "./node_modules/.bin/eslint",
+}
