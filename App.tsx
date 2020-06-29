@@ -2,6 +2,8 @@ import React from 'react';
 import { StatusBar } from 'react-native';
 import { ThemeProvider } from 'styled-components/native';
 
+import './src/config';
+
 import Routes from './src/routes';
 import { DefaultTheme } from './src/themes';
 
