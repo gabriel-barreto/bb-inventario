@@ -42,6 +42,7 @@ module.exports = {
       },
     ],
     'import/prefer-default-export': 'off',
+    'no-console': ['warn', { allow: ['tron'] }],
     'no-unused-expressions': 'off',
     'no-unused-vars': [
       'error',
