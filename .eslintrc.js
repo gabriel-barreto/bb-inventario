@@ -17,9 +17,44 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['@typescript-eslint', 'prettier', 'react'],
+  settings: {
+    'import/extensions': ['.js', '.ts', '.tsx'],
+    'import/resolver': {
+      node: { extensions: ['.js', '.ts', '.tsx'] },
+    },
+  },
   rules: {
-    'prettier/prettier': 'error',
-    'react/jsx-filename-extension': ['warn', { extensions: ['.tsx', '.ts'] }],
+    'space-before-function-paren': 'off',
+    'implicit-arrow-linebreak': 'off',
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      { js: 'never', ts: 'never', tsx: 'never' },
+    ],
+    'import/no-extraneous-dependencies': [
+      'warn',
+      {
+        devDependencies: [
+          '**/*.spec.ts',
+          '**/*.stories.ts',
+          '**/*.stories.mdx',
+        ],
+      },
+    ],
     'import/prefer-default-export': 'off',
+    'no-unused-expressions': 'off',
+    'no-unused-vars': [
+      'error',
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        ignoreRestSiblings: true,
+      },
+    ],
+    'no-underscore-dangle': 'off',
+    'prettier/prettier': 'error',
+    'react/jsx-filename-extension': ['warn', { extensions: ['.ts', '.tsx'] }],
+    'react/jsx-props-no-spreading': 'off',
+    'react/jsx-indent': 'off',
   },
 };
