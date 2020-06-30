@@ -7,7 +7,7 @@ import { Layout } from '../../components';
 import Item from './Item';
 
 export default function ListPage() {
-  const navigate = useNavigation();
+  const navigation = useNavigation();
   const items = Array.from(
     // { length: faker.random.number({ min: 4, max: 16 }) },
     { length: 16 },
@@ -20,10 +20,10 @@ export default function ListPage() {
   );
 
   function onItemPress(itemId: string) {
-    console.tron.log('Pressed Item: ', itemId);
+    navigation.navigate('Details', { itemId });
   }
 
-  navigate.setOptions({
+  navigation.setOptions({
     title: 'BB Inventário',
   });
 
