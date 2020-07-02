@@ -1,10 +1,12 @@
 import faker from 'faker';
 import React from 'react';
+import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 import { Layout } from '../../components';
 
 import Item from './Item';
+import * as S from './styled';
 
 export default function ListPage() {
   const navigation = useNavigation();
@@ -23,6 +25,10 @@ export default function ListPage() {
     navigation.navigate('Details', { itemId });
   }
 
+  function openReader() {
+    navigation.navigate('Reader');
+  }
+
   navigation.setOptions({
     title: 'BB Inventário',
   });
@@ -30,9 +36,20 @@ export default function ListPage() {
   return (
     <Layout>
       <>
-        {items.map((each) => (
-          <Item {...each} key={each.id} onPress={() => onItemPress(each.id)} />
-        ))}
+        <S.ItemsList>
+          {items.map((each) => (
+            <Item
+              {...each}
+              key={each.id}
+              onPress={() => onItemPress(each.id)}
+            />
+          ))}
+        </S.ItemsList>
+        <S.ActionFloating underlayColor="#1b447e" onPress={openReader}>
+          <S.ActionIcon>
+            <MaterialIcons name="add" size={32} />
+          </S.ActionIcon>
+        </S.ActionFloating>
       </>
     </Layout>
   );
