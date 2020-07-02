@@ -24,7 +24,7 @@ module.exports = {
     },
   },
   rules: {
-    'space-before-function-paren': 'off',
+    'global-require': 'off',
     'implicit-arrow-linebreak': 'off',
     'import/extensions': [
       'error',
@@ -57,5 +57,6 @@ module.exports = {
     'react/jsx-filename-extension': ['warn', { extensions: ['.ts', '.tsx'] }],
     'react/jsx-props-no-spreading': 'off',
     'react/jsx-indent': 'off',
+    'space-before-function-paren': 'off',
   },
 };
