@@ -19,5 +19,6 @@ export default {
   sizes: {
     normal: '16px',
     lg: '14px',
+    strong: '18px',
   },
 };
