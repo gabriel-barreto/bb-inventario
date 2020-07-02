@@ -17,6 +17,7 @@
     "@types/styled-components": "^5.1.0",
     "chroma-js": "^2.1.0",
     "expo": "~38.0.1",
+    "expo-barcode-scanner": "~8.2.1",
     "expo-status-bar": "^1.0.0",
     "faker": "^4.1.0",
     "react": "~16.11.0",
