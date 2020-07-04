@@ -12,7 +12,7 @@ type ScannedCode = {
 
 export default function ReaderPage() {
   const [hasPermission, setPermission] = useState<Boolean | null>(null);
-  const [scanned, setScanned] = useState<Boolean>(false);
+  const [scanned, setScanned] = useState<Boolean | String>(false);
   const navigator = useNavigation();
 
   useEffect(() => {
@@ -24,12 +24,16 @@ export default function ReaderPage() {
   function onCodeScanned({ type, data }: ScannedCode) {
     if (scanned) return;
 
-    setScanned(true);
+    setScanned(data);
     console.tron.log({ type, data });
   }
 
   function onReadAgainPress() {
     setScanned(false);
+  }
+
+  function onContinuePress() {
+    navigator.navigate('Form', { code: scanned });
   }
 
   navigator.setOptions({ title: 'Registrar Item' });
@@ -68,7 +72,7 @@ export default function ReaderPage() {
             <S.Reset onPress={onReadAgainPress}>
               <S.ResetLabel>Ler novamente!</S.ResetLabel>
             </S.Reset>
-            <S.Next onPress={() => {}}>
+            <S.Next onPress={onContinuePress}>
               <S.NextLabel>Continuar</S.NextLabel>
             </S.Next>
           </>
