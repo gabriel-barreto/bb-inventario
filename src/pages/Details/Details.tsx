@@ -1,32 +1,71 @@
-import faker from 'faker';
-import React from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-import { Layout } from '../../components';
+import { Layout, Loader, Warning } from '../../components';
+import { $items } from '../../services';
 
 import DeleteButton from './DeleteButton';
 import Prop from './Prop';
 
+type Route = {
+  params: {
+    itemId: string;
+  };
+};
+
+type Item = {
+  code: string;
+  id: string;
+  name: string;
+  sector: string;
+  user: {
+    name: string;
+    registry: string;
+  };
+};
+
 export default function DetailsPage() {
   const navigation = useNavigation();
+  const { params } = useRoute() as Route;
+  const [loading, setLoading] = useState(false);
+  const [item, setItem] = useState<Item | null>(null);
 
   navigation.setOptions({
     title: 'Detalhes',
+  });
+
+  useEffect(() => {
+    setLoading(true);
+    $items
+      .fetchOne(params.itemId)
+      .then((doc) => {
+        setItem(doc as Item);
+        console.tron.log(doc);
+      })
+      .finally(() => setLoading(false));
+  }, [params.itemId]);
+
+  if (loading) {
+    return (
+      <Layout>
+        <Loader label="Buscando item..." />
+      </Layout>
+    );
+  }
+
+  if (!item) {
+    return (
+      <Layout>
+        <Warning>Item não encontrado!</Warning>
+      </Layout>
+    );
+  }
+
+  navigation.setOptions({
     headerRight: function HeaderRight() {
       return <DeleteButton />;
     },
   });
-
-  const item = {
-    code: faker.random.number(999999).toString().padStart(6, '0'),
-    name: faker.lorem.words(faker.random.number({ min: 2, max: 6 })),
-    sector: faker.lorem.words(faker.random.number({ min: 1, max: 3 })),
-    user: {
-      name: faker.name.findName(),
-      registry: faker.random.number(999999).toString().padEnd(6, '0'),
-    },
-  };
-
   return (
     <Layout container>
       <>
