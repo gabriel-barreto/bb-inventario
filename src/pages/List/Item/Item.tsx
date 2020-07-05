@@ -6,16 +6,16 @@ import * as S from './styled';
 type Props = {
   code: string;
   sector: string;
-  title: string;
+  name: string;
   onPress: () => void;
 };
 
-export default function Item({ code, sector, title, onPress }: Props) {
+export default function Item({ code, name, sector, onPress }: Props) {
   return (
     <S.Item onPress={onPress}>
       <S.Container>
         <S.Body>
-          <S.Title>{title}</S.Title>
+          <S.Title>{name}</S.Title>
           <S.Details>
             <S.Detail>Cod.: {code}</S.Detail>
             <S.Detail>Setor: {sector}</S.Detail>
