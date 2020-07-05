@@ -1,3 +1,4 @@
+import { AsyncStorage } from 'react-native';
 import Reactotron from 'reactotron-react-native';
 
 import App from '../../app.json';
@@ -14,6 +15,7 @@ if (__DEV__) {
     host: '192.168.56.212',
   })
     .useReactNative()
+    .setAsyncStorageHandler(AsyncStorage)
     .connect();
 
   console.tron = tron;
