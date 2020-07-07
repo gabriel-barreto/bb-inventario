@@ -17,6 +17,7 @@ export default [
     label: 'Matrícula Funcionário*:',
     name: 'userRegistry',
     placeholder: 'Exemplo: 123456-7',
+    maxLength: 8,
     keyboardType: 'number-pad',
   },
 ];
