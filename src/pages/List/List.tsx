@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useState } from 'react';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 import { Layout, Loader, Warning } from '../../components';
 import { $items } from '../../services';
@@ -42,17 +42,20 @@ export default function ListPage() {
     title: 'BB Inventário',
   });
 
-  useEffect(() => {
-    setLoading(true);
-    $items
-      .list()
-      .then((docs) => {
-        setItems(docs);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      setLoading(true);
+      $items
+        .list()
+        .then((docs) => {
+          console.tron.log(docs);
+          setItems(docs);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }, []),
+  );
 
   if (loading) {
     return (

@@ -1,5 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import React, { useCallback, useState } from 'react';
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 
 import { Layout, Loader, Warning } from '../../components';
 import { $items } from '../../services';
@@ -34,16 +38,17 @@ export default function DetailsPage() {
     title: 'Detalhes',
   });
 
-  useEffect(() => {
-    setLoading(true);
-    $items
-      .fetchOne(params.itemId)
-      .then((doc) => {
-        setItem(doc as Item);
-        console.tron.log(doc);
-      })
-      .finally(() => setLoading(false));
-  }, [params.itemId]);
+  useFocusEffect(
+    useCallback(() => {
+      setLoading(true);
+      $items
+        .fetchOne(params.itemId)
+        .then((doc) => {
+          setItem(doc as Item);
+        })
+        .finally(() => setLoading(false));
+    }, [params.itemId]),
+  );
 
   if (loading) {
     return (
