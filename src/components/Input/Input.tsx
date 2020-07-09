@@ -3,10 +3,12 @@ import React from 'react';
 import * as S from './styled';
 
 type Props = {
-  autocompleteType: string;
+  autoFocus?: boolean;
+  autocompleteType?: string;
+  keyboardType?: string;
   label: string;
   placeholder: string;
-  value: string;
+  value?: string;
   onChange: (value: string) => void;
 };
 
