@@ -1,5 +1,9 @@
 import React, { useCallback, useState } from 'react';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 
 import { Loader, Warning } from '../../components';
 import { $items } from '../../services';
@@ -10,6 +14,13 @@ import SearchButton from './SearchButton';
 import SearchForm from './SearchForm';
 
 import * as S from './styled';
+
+type Route = {
+  params: {
+    message?: string;
+    variant?: 'error' | 'success';
+  };
+};
 
 type Item = {
   code: string;
@@ -26,10 +37,11 @@ type Toast = {
 
 export default function ListPage() {
   const navigation = useNavigation();
+  const { params } = useRoute() as Route;
   const [toast, setToast] = useState<Toast>({
-    message: 'Magnam adipisci laboriosam. Suscipit eum nemo.',
+    message: '',
     variant: 'success',
-    visible: true,
+    visible: false,
   });
   const [searching, setSearching] = useState(false);
   const [filter, setFilter] = useState<string | null>(null);
@@ -53,22 +65,30 @@ export default function ListPage() {
     setSearching(false);
   }
 
+  function fetchItems() {
+    setLoading(true);
+    $items
+      .list()
+      .then(setItems)
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+
+  function showToast() {
+    if (params && params.message) {
+      setToast((prev) => ({ ...prev, ...params }));
+    }
+  }
+
   navigation.setOptions({
     title: 'BB Inventário',
   });
 
   useFocusEffect(
     useCallback(() => {
-      setLoading(true);
-      $items
-        .list()
-        .then((docs) => {
-          console.tron.log(docs);
-          setItems(docs);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      fetchItems();
+      showToast();
     }, []),
   );
 
