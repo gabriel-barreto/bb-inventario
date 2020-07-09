@@ -8,17 +8,24 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#F8D117"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
+      "bundleIdentifier": "com.leandroairesbarreto.bbinventario",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "android": {
+      "package": "com.leandroairesbarreto.bbinventario",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon-fg.png",
+        "backgroundColor": "#F8D117"
+      }
     }
   }
 }
