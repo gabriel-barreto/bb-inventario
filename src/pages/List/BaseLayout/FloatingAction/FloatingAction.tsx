@@ -4,11 +4,15 @@ import { useNavigation } from '@react-navigation/native';
 
 import * as S from './styled';
 
-export default function FloatingAction() {
+type Props = {
+  codes: string[];
+};
+
+export default function FloatingAction({ codes }: Props) {
   const navigator = useNavigation();
 
   function onPress() {
-    navigator.navigate('Reader');
+    navigator.navigate('Reader', { codes });
   }
 
   return (
