@@ -1,8 +1,10 @@
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, Alert } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+
+import { codeAlreadyTakenWarning } from '../../constants';
 
 import * as S from './styled';
 import Prompt from './Prompt';
@@ -12,11 +14,27 @@ type ScannedCode = {
   data: string;
 };
 
+type Route = {
+  params: {
+    codes: string[];
+  };
+};
+
 export default function ReaderPage() {
   const [hasPermission, setPermission] = useState<Boolean | null>(null);
   const [scanned, setScanned] = useState<Boolean | String>(false);
   const [manual, setManual] = useState(false);
+  const { params } = useRoute() as Route;
   const navigator = useNavigation();
+
+  function checkNewCode(code: string) {
+    if (params.codes.includes(code)) {
+      Alert.alert('Atenção', codeAlreadyTakenWarning);
+      return;
+    }
+
+    navigator.navigate('Form', { code });
+  }
 
   function onCodeScanned({ data }: ScannedCode) {
     if (scanned) return;
@@ -28,7 +46,7 @@ export default function ReaderPage() {
   }
 
   function onContinuePress() {
-    navigator.navigate('Form', { code: scanned });
+    checkNewCode(String(scanned));
   }
 
   function onPromptCloses() {
@@ -37,7 +55,7 @@ export default function ReaderPage() {
 
   function onPromptSubmit(code: string) {
     setManual(false);
-    navigator.navigate('Form', { code });
+    checkNewCode(code);
   }
 
   navigator.setOptions({
