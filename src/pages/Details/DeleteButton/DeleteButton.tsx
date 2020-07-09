@@ -3,7 +3,11 @@ import { ActivityIndicator, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { failToRemoveWarning } from '../../../constants';
+import {
+  failToRemoveWarning,
+  successRemovedWarning,
+  removeConfirmation,
+} from '../../../constants';
 import { $items } from '../../../services';
 
 import * as S from './styled';
@@ -24,10 +28,10 @@ export default function DeleteButton() {
     $items
       .remove(params.itemId)
       .then(() => {
-        navigator.navigate('List', { message: '' });
+        navigator.navigate('List', { message: successRemovedWarning });
       })
       .catch(() => {
-        Alert.alert('Oops...', failToRemoveWarning);
+        Alert.alert('Erro Inesperado!', failToRemoveWarning);
       })
       .finally(() => {
         setLoading(false);
@@ -35,14 +39,10 @@ export default function DeleteButton() {
   }
 
   function onPress() {
-    Alert.alert(
-      'Atençao!',
-      'Tem certeza que deseja continuar? Os dados afetados não poderão ser recuperados.',
-      [
-        { text: 'Continuar', onPress: removeItem },
-        { text: 'Cancelar', style: 'cancel' },
-      ],
-    );
+    Alert.alert('Atenção!', removeConfirmation, [
+      { text: 'Continuar', onPress: removeItem },
+      { text: 'Cancelar', style: 'cancel' },
+    ]);
   }
 
   if (loading) {
