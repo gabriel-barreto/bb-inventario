@@ -20,4 +20,7 @@ const config = {
   appId: FIREBASE_APP_ID,
 };
 
-if (!firebase.apps.length) firebase.initializeApp(config);
+if (!firebase.apps.length) {
+  firebase.initializeApp(config);
+  if (__DEV__) firebase.firestore.setLogLevel('debug');
+}
