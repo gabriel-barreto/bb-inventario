@@ -1,6 +1,6 @@
 import $item from './items.service';
 
-import { failToCreateWarning } from '../constants';
+import { failToCreateWarning, successCreatedWarning } from '../constants';
 
 type Payload = {
   code: string;
@@ -56,17 +56,16 @@ function inputHandler(
 function submitHandler(
   loaderSetter: (state: boolean) => void,
   warningSetter: (message: string) => void,
-  navigate: (path: string) => void,
+  navigate: (path: string, params: Record<string, string>) => void,
   payload: Payload,
 ) {
   return async () => {
-    console.log('submit');
     loaderSetter(true);
     try {
       const doc = transform(payload);
       await $item.create(doc);
       loaderSetter(false);
-      navigate('List');
+      navigate('List', { message: successCreatedWarning });
     } catch (_) {
       loaderSetter(false);
       warningSetter(failToCreateWarning);
