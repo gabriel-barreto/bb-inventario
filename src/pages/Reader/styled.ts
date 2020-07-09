@@ -25,6 +25,12 @@ export const Container = styled.View`
   width: 100%;
 `;
 
+export const HeaderButton = styled.TouchableOpacity`
+  align-items: center;
+  justify-content: center;
+  margin: 0 16px 0 0;
+`;
+
 export const Scanner = styled(BarCodeScanner)`
   align-items: center;
   justify-content: center;

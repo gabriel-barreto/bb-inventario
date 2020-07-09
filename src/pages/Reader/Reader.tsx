@@ -1,9 +1,11 @@
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 import * as S from './styled';
+import Prompt from './Prompt';
 
 type ScannedCode = {
   type: string;
@@ -13,19 +15,12 @@ type ScannedCode = {
 export default function ReaderPage() {
   const [hasPermission, setPermission] = useState<Boolean | null>(null);
   const [scanned, setScanned] = useState<Boolean | String>(false);
+  const [manual, setManual] = useState(false);
   const navigator = useNavigation();
 
-  useEffect(() => {
-    BarCodeScanner.requestPermissionsAsync().then(({ granted }) => {
-      setPermission(granted);
-    });
-  }, []);
-
-  function onCodeScanned({ type, data }: ScannedCode) {
+  function onCodeScanned({ data }: ScannedCode) {
     if (scanned) return;
-
     setScanned(data);
-    console.tron.log({ type, data });
   }
 
   function onReadAgainPress() {
@@ -36,21 +31,49 @@ export default function ReaderPage() {
     navigator.navigate('Form', { code: scanned });
   }
 
-  navigator.setOptions({ title: 'Registrar Item' });
+  function onPromptCloses() {
+    setManual(false);
+  }
 
-  if (hasPermission === null)
+  function onPromptSubmit(code: string) {
+    setManual(false);
+    navigator.navigate('Form', { code });
+  }
+
+  navigator.setOptions({
+    title: 'Registrar Item',
+    headerRight: function HeaderRight() {
+      return (
+        <S.HeaderButton onPress={() => setManual(true)}>
+          <Text>
+            <MaterialIcons name="keyboard" color="#fff" size={24} />
+          </Text>
+        </S.HeaderButton>
+      );
+    },
+  });
+
+  useEffect(() => {
+    BarCodeScanner.requestPermissionsAsync().then(({ granted }) => {
+      setPermission(granted);
+    });
+  }, []);
+
+  if (hasPermission === null) {
     return (
       <S.Container>
         <S.Message>Solicitando permissão para utilizar a câmera</S.Message>
       </S.Container>
     );
+  }
 
-  if (hasPermission === false)
+  if (hasPermission === false) {
     return (
       <S.Container>
         <S.Warning>Sem permissão para utilizar a câmera</S.Warning>
       </S.Container>
     );
+  }
 
   return (
     <S.Container>
@@ -65,6 +88,12 @@ export default function ReaderPage() {
       ) : null}
 
       {scanned && <S.ActionsOverlay />}
+
+      <Prompt
+        visible={manual}
+        onSubmit={onPromptSubmit}
+        onCancel={onPromptCloses}
+      />
 
       <S.Actions>
         {scanned && (
