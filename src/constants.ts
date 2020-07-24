@@ -15,3 +15,8 @@ export const failToRemoveWarning =
 
 export const codeAlreadyTakenWarning =
   'O código escaneado já se encontrado registrado em nosso inventário!';
+
+export const invalidUserRegistry =
+  'A matrícula informada não atende os padrões. Por favor, verifique os dados e tente novamente.';
+
+export const userRegistryRegex = new RegExp(/([ACF]{1})(\d{7})/);
