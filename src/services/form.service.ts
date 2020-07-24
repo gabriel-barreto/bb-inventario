@@ -1,6 +1,11 @@
 import $item from './items.service';
 
-import { failToCreateWarning, successCreatedWarning } from '../constants';
+import {
+  failToCreateWarning,
+  invalidUserRegistry,
+  successCreatedWarning,
+  userRegistryRegex,
+} from '../constants';
 
 type Payload = {
   code: string;
@@ -34,10 +39,7 @@ function transform(payload: Payload): Item {
 const masks: Record<string, (value: string) => string> = {
   userRegistry: (value: string) => {
     if (!value) return value;
-    return value
-      .replace(/\D/, '')
-      .replace(/(\d{7})(\d)/, '$1')
-      .replace(/(\d{6})(\d)/, '$1-$2');
+    return value.replace(/([ACF]{1})\D/, '$1').replace(/(\d{7})\./, '$1');
   },
 };
 
@@ -62,8 +64,15 @@ function submitHandler(
   return async () => {
     loaderSetter(true);
     try {
+      const isUserRegistryValid = userRegistryRegex.test(payload.userRegistry);
+      if (!isUserRegistryValid) {
+        warningSetter(invalidUserRegistry);
+        return;
+      }
+
       const doc = transform(payload);
       await $item.create(doc);
+
       loaderSetter(false);
       navigate('List', { message: successCreatedWarning });
     } catch (_) {
