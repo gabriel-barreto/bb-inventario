@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-import { Input, Layout } from '../../components';
+import { Input, Layout, Toast } from '../../components';
 import { $form } from '../../services';
 
 import fields from './fields';
@@ -26,7 +26,7 @@ export default function FormPage() {
   const navigator = useNavigation();
   const { params } = useRoute() as Route;
   const [, setLoading] = useState(false);
-  const [, setWarning] = useState('');
+  const [warning, setWarning] = useState('');
   const [payload, setPayload] = useState<Payload>({
     code: '',
     name: '',
@@ -38,6 +38,10 @@ export default function FormPage() {
   useEffect(() => {
     setPayload((prev) => ({ ...prev, code: params.code }));
   }, [params.code]);
+
+  function onToastHidden() {
+    setWarning('');
+  }
 
   navigator.setOptions({ title: 'Registrar Item' });
   return (
@@ -69,6 +73,12 @@ export default function FormPage() {
             <S.Warning>* campos requeridos</S.Warning>
           </S.Footer>
         </ScrollView>
+
+        {warning ? (
+          <Toast variant="error" onClose={onToastHidden}>
+            {warning}
+          </Toast>
+        ) : null}
       </>
     </Layout>
   );
