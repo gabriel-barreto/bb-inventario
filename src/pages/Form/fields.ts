@@ -16,8 +16,7 @@ export default [
   {
     label: 'Matrícula Funcionário*:',
     name: 'userRegistry',
-    placeholder: 'Exemplo: 123456-7',
+    placeholder: 'Exemplo: F1234567',
     maxLength: 8,
-    keyboardType: 'number-pad',
   },
 ];
